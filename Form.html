@@ -1,76 +1,369 @@
 <!doctype html>
 <html lang="en">
- <head>
-  <title>Feedback</title>
-  <style>
-    label {	float: left;
-			width: 150px;}
-      #container{
-          width: 700px;
-          margin: auto;
-          background-color: beige;
-      } 
-      main{
-          padding: 50px;
-      }
-  </style>
- </head>
- <body>
- <div id="container">
-	 
-	 <main>
-	 <h2>Feeback</h2>
-	 <h3>Love something? Hate something? Let us know!</h3>
-		 Note : Fields marked with an asterisk(*) are mandatory
-		 <br><br>
-		 <form method="post" novalidate>
-			<label>Title*:</label>
-			<input type="radio" name="title" id="miss" value="miss" required="required"/>Miss
-			<input type="radio" name="title" id="mr" value="mr" required="required"/>Mr.
-			<input type="radio" name="title" id="mrs" value="mrs" required="required"/>Mrs.
-			<br><br>
-			<label for="firstName">First Name*:</label>
-			<input type="text" name="firstName" id="firstName" placeholder="First Name" />	
-			<br><br>
-			
 
-			<label for="lastName">Last Name*:</label>
-			<input type="text" name="lastName" id="lastName" placeholder="Last Name" />
-			<br><br>
-			
+<head>
+	<title>Feedback</title>
+	<style>
+		label {
+			float: left;
+			width: 150px;
+		}
 
-			<label for="emailId">Email Id*:</label>
-			<input type="text" name="emailId" id="emailId" placeholder="yourname@domain.com" />
-			<br><br>
-			
+		#container {
+			width: 900px;
+			margin: auto;
+			background-color: beige;
+		}
 
-			<label for="phoneNumber">Phone Number*:</label>
-			<input type="text" name="phoneNumber" id="phoneNumber" placeholder="xxx-xxx-xxxx" />
-			<br><br>
-			
-            <label for="zipcode">ZipCode*:</label>
-			<input type="text" name="zipcode" id="zipcode" placeholder="xxxxxx" />
-			<br><br>
-             
-            <label for="zipcode">How did you hear*:</label>
-			<input type='checkbox' name="source" value="facebook" /> Facebook
-            <input type='checkbox' name="source" value="google" /> Google
-            <input type='checkbox' name="source" value="yelp" /> Yelp 
-			<br><br> 
-             
-			<label for="comments">Comments*:</label>
-			<textarea name="text" id="comments" placeholder="Your comments" rows="5" cols="25"></textarea>
-			<br><br>
-			<input type="Submit">
-			<input type="Reset">
-			<br><br>
-		 </form>
-	 </main>
- </div>
+		main {
+			padding: 50px;
+		}
 
- <script>
- 
- </script>
+		.error {
+			color: red;
+			margin-left: 15px;
+		}
 
- </body>
+		.btns {
+			margin-top: 25px;
+		}
+
+		#checkboxContainer {
+			overflow-y: auto;
+		}
+
+		table {
+			width: 50%;
+			border-collapse: collapse;
+			margin: 20px auto;
+		}
+
+		th,
+		td {
+			padding: 8px 12px;
+			border: 1px solid #ccc;
+			text-align: left;
+		}
+
+		th {
+			background-color: #f2f2f2;
+		}
+
+		tr:nth-child(even) {
+			background-color: #f9f9f9;
+		}
+
+		tr:hover {
+			background-color: #ddd;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="container">
+
+		<main>
+			<h2>Feeback</h2>
+			<h3>Love something? Hate something? Let us know!</h3>
+			Note : Fields marked with an asterisk(*) are mandatory
+			<br><br>
+			<form method="post" id="feedbackForm" novalidate onsubmit="collectFormData(event)">
+				<label>Title*:</label>
+				<div id="radioGroup">
+					<input type="radio" name="title" id="miss" value="miss" required="required" />Miss
+					<input type="radio" name="title" id="mr" value="mr" required="required" />Mr.
+					<input type="radio" name="title" id="mrs" value="mrs" required="required" />Mrs.
+				</div>
+				<br><br>
+				<label for="firstName">First Name*:</label>
+				<input type="text" name="firstName" id="firstName" placeholder="First Name" />
+				<br><br>
+
+
+				<label for="lastName">Last Name*:</label>
+				<input type="text" name="lastName" id="lastName" placeholder="Last Name" />
+				<br><br>
+
+
+				<label for="emailId">Email Id*:</label>
+				<input type="text" name="emailId" id="emailId" placeholder="yourname@domain.com" />
+				<br><br>
+
+
+				<label for="phoneNumber">Phone Number*:</label>
+				<input type="text" name="phoneNumber" id="phoneNumber" placeholder="xxx-xxx-xxxx" />
+				<br><br>
+
+				<label for="zipcode">ZipCode*:</label>
+				<input type="text" name="zipcode" id="zipcode" placeholder="xxxxxx" />
+				<br><br>
+
+				<label for="zipcode">How did you hear*:</label>
+				<div id="sourceGroup">
+					<input type='checkbox' name="source" value="facebook" /> Facebook
+					<input type='checkbox' name="source" value="google" /> Google
+					<input type='checkbox' name="source" value="yelp" /> Yelp
+				</div>
+
+				<br><br>
+
+				<label for="comments">Comments*:</label>
+				<textarea name="text" id="comments" placeholder="Your comments" rows="5" cols="25"></textarea>
+				<br><br>
+				<div>
+					<label for="singleSelect">Choose a drink:</label>
+					<select id="singleSelect" name="drink" onChange="handleSelectChange(event)">
+						<option value="" disabled selected>Select a drink option</option>
+						<option value="coffee">Coffee</option>
+						<option value="tea">Tea</option>
+						<option value="soda">Soda</option>
+						<option value="juice">Juice</option>
+						<option value="water">Water</option>
+					</select>
+				</div>
+				<div id="checkboxContainer"></div>
+				<div class="btns">
+					<input type="submit" id="submitButton">
+					<input type="reset">
+				</div>
+				<br><br>
+			</form>
+		</main>
+	</div>
+	<div id="tableContainer"></div>
+
+	<script>
+		function collectFormData(event) {
+			event.preventDefault();
+			var form = document.getElementById('feedbackForm');
+			var formData = new FormData(form);
+			var formObject = {};
+			var options_note = [];
+			formData.forEach((value, key, i) => {
+				if (key.startsWith("_")) {
+					options_note.push(key.substring(1).toLowerCase());
+				} else {
+					formObject[key] = value;
+				}
+			});
+			formObject['notes'] = options_note;
+			createTable(formObject);
+			event.target.reset();
+			var submitButton = document.getElementById('submitButton');
+			submitButton.disabled = true;
+		}
+		function createTable(data) {
+			var table = document.createElement('table');
+			var tableBody = document.createElement('tbody');
+
+			for (var key in data) {
+				var row = document.createElement('tr');
+				var cellKey = document.createElement('td');
+				var cellValue = document.createElement('td');
+
+				cellKey.textContent = key;
+				cellValue.textContent = data[key];
+
+				row.appendChild(cellKey);
+				row.appendChild(cellValue);
+				tableBody.appendChild(row);
+			}
+
+			table.appendChild(tableBody);
+			var tableContainer = document.getElementById('tableContainer');
+			tableContainer.appendChild(table);
+		}
+
+		function handleSelectChange(event) {
+			var selectedOption = event.target.value;
+			var checkboxContainer = document.getElementById('checkboxContainer');
+			checkboxContainer.innerHTML = '';
+			const arr = [
+				{
+					key: 'coffee',
+					items: [
+						'Large', 'Medium', 'Small', 'Extra Shot', 'Soy Milk', 'Custom'
+					]
+				},
+				{
+					key: 'Tea',
+					items: [
+						'Large', 'Medium', 'Small', 'Lemon', 'Honey'
+					]
+				},
+				{
+					key: 'Soda',
+					items: [
+						'Large', 'Medium', 'Small', 'Ice', 'No Ice'
+					]
+				},
+				{
+					key: 'Juice',
+					items: [
+						'Large', 'Medium', 'Small', 'Chilled', 'Room Temperature'
+					]
+				},
+				{
+					key: 'Water',
+					items: [
+						'Large', 'Medium', 'Small', 'Chilled', 'Room Temperature'
+					]
+				}
+			];
+
+			const element = arr.find((ele) => ele.key.toLowerCase() === selectedOption);
+			if (element) {
+				element.items.forEach(item => {
+					var checkboxLabel = document.createElement('label');
+					var checkbox = document.createElement('input');
+					checkbox.type = 'checkbox';
+					checkbox.name = '_' + item;
+					checkbox.id = item;
+					checkboxLabel.htmlFor = item;
+					checkboxLabel.appendChild(document.createTextNode(item));
+					checkboxLabel.appendChild(checkbox);
+					checkboxContainer.appendChild(checkboxLabel);
+					if (item.toLowerCase() === 'custom') {
+						checkbox.addEventListener('change', function () {
+							var customTextField = document.getElementById('customTextField');
+							if (checkbox.checked && !customTextField) {
+								customTextField = document.createElement('input');
+								customTextField.type = 'text';
+								customTextField.name = 'drink custom';
+								customTextField.id = 'customTextField';
+								customTextField.required = true;
+								checkboxLabel.appendChild(customTextField);
+							}
+							else if (!checkbox.checked && customTextField) {
+								customTextField.remove();
+							}
+						});
+					}
+				});
+			}
+		}
+		document.addEventListener('DOMContentLoaded', (event) => {
+			var alphanumeric = /^[0-9a-zA-Z]+$/;
+			var emailRegex = /^[a-zA-Z0-9._-]+@northeastern\.edu$/;
+			var phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
+			var zipRegex = /^\d{5}(?:-\d{4})?$/;
+
+			var form = document.getElementById('feedbackForm');
+			var submitButton = document.getElementById('submitButton');
+			function isRadioGroupValid() {
+				var radios = document.querySelectorAll('#radioGroup input[type="radio"]');
+				var anyChecked = Array.from(radios).some(radio => radio.checked);
+				return anyChecked;
+			}
+			function isCheckboxGroupValid() {
+				var checkboxes = document.querySelectorAll('#sourceGroup input[type="checkbox"]');
+				var anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+				return anyChecked;
+			}
+
+			function validateCheckboxGroup() {
+				var anyChecked = isCheckboxGroupValid();
+				var errorElement = document.getElementById('sourceError');
+
+				if (!anyChecked) {
+					if (!errorElement) {
+						errorElement = document.createElement('span');
+						errorElement.className = 'error';
+						errorElement.id = 'sourceError';
+						document.getElementById('sourceGroup').appendChild(errorElement);
+					}
+					errorElement.textContent = 'Please select at least one option.';
+				} else if (errorElement) {
+					errorElement.remove();
+				}
+
+				updateSubmitButtonState();
+				return anyChecked;
+			}
+			document.querySelectorAll('#sourceGroup input[type="checkbox"]').forEach(checkbox => {
+				checkbox.addEventListener('change', validateCheckboxGroup);
+			});
+
+			function validateField(fieldElement) {
+				var regex, minLength, maxLength;
+				switch (fieldElement.id) {
+					case 'firstName':
+					case 'lastName':
+						regex = alphanumeric;
+						minLength = 1;
+						maxLength = 50;
+						example = "e.g., JohnDoe";
+						break;
+					case 'emailId':
+						regex = emailRegex;
+						minLength = 4;
+						maxLength = 255;
+						example = "e.g., example@northeastern.edu";
+						break;
+					case 'phoneNumber':
+						regex = phoneRegex;
+						minLength = 12;
+						maxLength = 12;
+						example = "e.g., 123-456-7890";
+						break;
+					case 'zipcode':
+						regex = zipRegex;
+						minLength = 5;
+						maxLength = 10;
+						example = "e.g., 12345 or 12345-6789";
+						break;
+					case 'comments':
+						regex = /^[\s\S]{5,500}$/;
+						minLength = 5;
+						maxLength = 500;
+						example = "";  // No example needed for comments
+						break;
+					default:
+						return true;
+				}
+				var value = fieldElement.value;
+				var isValid = value && value.length >= minLength && value.length <= maxLength && regex.test(value);
+				var errorElement = fieldElement.nextElementSibling;
+
+				if (!isValid) {
+					if (!errorElement || errorElement.className !== 'error') {
+						errorElement = document.createElement('span');
+						errorElement.className = 'error';
+						fieldElement.parentNode.insertBefore(errorElement, fieldElement.nextSibling);
+					}
+					errorElement.textContent = `Required (${minLength} to ${maxLength} characters) ${example}`;
+				} else if (errorElement && errorElement.className === 'error') {
+					errorElement.remove();
+				}
+
+				updateSubmitButtonState();
+				return isValid;
+			}
+
+			function updateSubmitButtonState() {
+				var anyErrors = Array.from(form.querySelectorAll('input, textarea')).some(field => {
+					if (field.type === 'submit' || field.type === 'reset') {
+						return false;  // Skip the submit button
+					}
+					var errorElement = field.nextElementSibling;
+					var isEmpty = field.value.trim() == '';
+					return isEmpty || (errorElement && errorElement.className === 'error');
+				});
+				var checkValid = isCheckboxGroupValid();
+				var radioValid = isRadioGroupValid();
+				submitButton.disabled = anyErrors || !checkValid || !radioValid;
+			}
+			if (form && submitButton) {
+				var fields = form.querySelectorAll('input, textarea');
+				fields.forEach(field => {
+					field.addEventListener('change', function () {
+						validateField(field);
+					});
+				});
+			}
+		});
+	</script>
+
+</body>
+
 </html>
