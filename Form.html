@@ -108,10 +108,10 @@
 				<br><br>
 
 				<label for="comments">Comments*:</label>
-				<textarea name="text" id="comments" placeholder="Your comments" rows="5" cols="25"></textarea>
+				<textarea name="comments" id="comments" placeholder="Your comments" rows="5" cols="25"></textarea>
 				<br><br>
 				<div>
-					<label for="singleSelect">Choose a drink:</label>
+					<label for="singleSelect">Choose a drink*:</label>
 					<select id="singleSelect" name="drink" onChange="handleSelectChange(event)">
 						<option value="" disabled selected>Select a drink option</option>
 						<option value="coffee">Coffee</option>
@@ -122,8 +122,13 @@
 					</select>
 				</div>
 				<div id="checkboxContainer"></div>
+				<br />
+				<div>
+					<label for="address2">Address2</label>
+					<input type='text' name="address2" placeholder="160 exchange st" />
+				</div>
 				<div class="btns">
-					<input type="submit" id="submitButton">
+					<input type="submit" id="submitButton" disabled>
 					<input type="reset">
 				</div>
 				<br><br>
@@ -226,17 +231,25 @@
 					if (item.toLowerCase() === 'custom') {
 						checkbox.addEventListener('change', function () {
 							var customTextField = document.getElementById('customTextField');
+							var customLabel = document.createElement('label');
+							customLabel.appendChild(document.createTextNode('*'));
+							var submitButton = document.getElementById('submitButton');
 							if (checkbox.checked && !customTextField) {
 								customTextField = document.createElement('input');
 								customTextField.type = 'text';
 								customTextField.name = 'drink custom';
 								customTextField.id = 'customTextField';
-								customTextField.required = true;
+								checkboxLabel.appendChild(customLabel);
 								checkboxLabel.appendChild(customTextField);
+								customTextField.addEventListener('keyup', () => {
+									window.updateSubmitButtonState();
+								})
 							}
 							else if (!checkbox.checked && customTextField) {
+								customLabel.remove();
 								customTextField.remove();
 							}
+							window.updateSubmitButtonState();
 						});
 					}
 				});
@@ -250,6 +263,8 @@
 
 			var form = document.getElementById('feedbackForm');
 			var submitButton = document.getElementById('submitButton');
+			var customTextField = document.getElementById('customTextField');
+			window.updateSubmitButtonState = updateSubmitButtonState;
 			function isRadioGroupValid() {
 				var radios = document.querySelectorAll('#radioGroup input[type="radio"]');
 				var anyChecked = Array.from(radios).some(radio => radio.checked);
@@ -284,6 +299,9 @@
 				checkbox.addEventListener('change', validateCheckboxGroup);
 			});
 
+			document.querySelector('#singleSelect').addEventListener('change', () => {
+				updateSubmitButtonState();
+			})
 			function validateField(fieldElement) {
 				var regex, minLength, maxLength;
 				switch (fieldElement.id) {
@@ -341,8 +359,8 @@
 			}
 
 			function updateSubmitButtonState() {
-				var anyErrors = Array.from(form.querySelectorAll('input, textarea')).some(field => {
-					if (field.type === 'submit' || field.type === 'reset') {
+				var anyErrors = Array.from(form.querySelectorAll('input, textarea, select')).some(field => {
+					if (field.type === 'submit' || field.type === 'reset' || field.name === 'address2') {
 						return false;  // Skip the submit button
 					}
 					var errorElement = field.nextElementSibling;
@@ -356,7 +374,7 @@
 			if (form && submitButton) {
 				var fields = form.querySelectorAll('input, textarea');
 				fields.forEach(field => {
-					field.addEventListener('change', function () {
+					field.addEventListener('keyup', function () {
 						validateField(field);
 					});
 				});
