@@ -15,6 +15,9 @@
 			background-color: beige;
 		}
 
+		#tableContainer {
+			margin-top: 20px;
+		}
 		main {
 			padding: 50px;
 		}
@@ -33,16 +36,19 @@
 		}
 
 		table {
-			width: 50%;
+			width: 60%;
 			border-collapse: collapse;
 			margin: 20px auto;
+			table-layout: auto;
+
 		}
 
 		th,
 		td {
-			padding: 8px 12px;
+			padding: 8px 16px;
 			border: 1px solid #ccc;
 			text-align: left;
+			white-space: nowrap;
 		}
 
 		th {
@@ -55,6 +61,12 @@
 
 		tr:hover {
 			background-color: #ddd;
+		}
+
+		#customDiv {
+			margin-top: 10px;
+			width: 100%;
+			overflow: auto;
 		}
 	</style>
 </head>
@@ -70,9 +82,9 @@
 			<form method="post" id="feedbackForm" novalidate onsubmit="collectFormData(event)">
 				<label>Title*:</label>
 				<div id="radioGroup">
-					<input type="radio" name="title" id="miss" value="miss" required="required" />Miss
-					<input type="radio" name="title" id="mr" value="mr" required="required" />Mr.
-					<input type="radio" name="title" id="mrs" value="mrs" required="required" />Mrs.
+					<input type="radio" name="title" id="miss" value="Miss" required="required" />Miss
+					<input type="radio" name="title" id="mr" value="Mr." required="required" />Mr.
+					<input type="radio" name="title" id="mrs" value="Mrs." required="required" />Mrs.
 				</div>
 				<br><br>
 				<label for="firstName">First Name*:</label>
@@ -85,7 +97,7 @@
 				<br><br>
 
 
-				<label for="emailId">Email Id*:</label>
+				<label for="emailId">Email*:</label>
 				<input type="text" name="emailId" id="emailId" placeholder="yourname@domain.com" />
 				<br><br>
 
@@ -94,10 +106,27 @@
 				<input type="text" name="phoneNumber" id="phoneNumber" placeholder="xxx-xxx-xxxx" />
 				<br><br>
 
+				<label for="city">City*:</label>
+				<input type="text" name="city" id="city" placeholder="City" />
+				<br><br>
+
+				<label for="state">State*:</label>
+				<input type="text" name="state" id="state" placeholder="State" />
+				<br><br>
+
+
+				<label for="address1">Street Address 1*:</label>
+				<input type="text" name="address1" id="address1" placeholder="123 Main St" />
+				<br><br>
+				<div>
+					<label for="address2">Street Address 2</label>
+					<input type='text' name="address2" placeholder="160 exchange st" />
+				</div>
+				<br />
+
 				<label for="zipcode">ZipCode*:</label>
 				<input type="text" name="zipcode" id="zipcode" placeholder="xxxxxx" />
 				<br><br>
-
 				<label for="zipcode">How did you hear*:</label>
 				<div id="sourceGroup">
 					<input type='checkbox' name="source" value="facebook" /> Facebook
@@ -123,62 +152,121 @@
 				</div>
 				<div id="checkboxContainer"></div>
 				<br />
-				<div>
-					<label for="address2">Address2</label>
-					<input type='text' name="address2" placeholder="160 exchange st" />
-				</div>
 				<div class="btns">
-					<input type="submit" id="submitButton" disabled>
+					<input type="submit" id="submitButton">
 					<input type="reset">
 				</div>
 				<br><br>
 			</form>
 		</main>
 	</div>
-	<div id="tableContainer"></div>
+	<div id="tableContainer">
+		<table id="mytable" style="display: none; margin-top:15px;">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Phone number</th>
+					<th>Street Address 1</th>
+					<th>Street Address 2</th>
+					<th>City</th>
+					<th>State</th>
+					<th>Zip Code</th>
+					<th>Source</th>
+					<th>Comments</th>
+					<th>Drink</th>
+					<th>Drink options</th>
+					<th>Drink Notes</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
 
 	<script>
+
+		function createTable(data) {
+			var table = document.getElementById('mytable');
+			var tableBody = table.querySelector('tbody');
+
+			var row = document.createElement('tr');
+			var cel1 = document.createElement('td');
+			var cel2 = document.createElement('td');
+			var cel3 = document.createElement('td');
+			var cel4 = document.createElement('td');
+			var cel5 = document.createElement('td');
+			var cel6 = document.createElement('td');
+			var cel7 = document.createElement('td');
+			var cel8 = document.createElement('td');
+			var cel9 = document.createElement('td');
+			var cel10 = document.createElement('td');
+			var cel11 = document.createElement('td');
+			var cel12 = document.createElement('td');
+			var cel13 = document.createElement('td');
+			cel1.textContent = data.title + ' ' + data.firstName + ' ' + data.lastName;
+			cel2.textContent = data.emailId;
+			cel3.textContent = data.phoneNumber;
+			cel4.textContent = data.address1;
+			cel5.textContent = data.address2;
+			cel6.textContent = data.city;
+			cel7.textContent = data.state;
+			cel8.textContent = data.zipcode;
+			var source = '';
+			for (let i = 0; i < data.source.length; i++) {
+				source += data.source[i] + ','
+			}
+			cel9.textContent = data.source;
+			cel10.textContent = data.comments;
+			cel11.textContent = data.drink;
+			var options = ''
+			for (let i = 0; i < data.options.length; i++) {
+				options += data.options[i] + ','
+			}
+			cel12.textContent = options.slice(0, -1);
+			cel13.textContent = data['drink custom'];
+			console.log(data);
+			row.appendChild(cel1);
+			row.appendChild(cel2);
+			row.appendChild(cel3);
+			row.appendChild(cel4);
+			row.appendChild(cel5);
+			row.appendChild(cel6);
+			row.appendChild(cel7);
+			row.appendChild(cel8);
+			row.appendChild(cel9);
+			row.appendChild(cel10);
+			row.appendChild(cel11);
+			row.appendChild(cel12);
+			row.appendChild(cel13);
+			tableBody.appendChild(row);
+			table.style.display = 'initial';
+		}
+
 		function collectFormData(event) {
 			event.preventDefault();
 			var form = document.getElementById('feedbackForm');
 			var formData = new FormData(form);
 			var formObject = {};
 			var options_note = [];
+			var source = [];
 			formData.forEach((value, key, i) => {
 				if (key.startsWith("_")) {
 					options_note.push(key.substring(1).toLowerCase());
-				} else {
+				}
+				else if (key === 'source') {
+					source.push(value);
+				}
+				else {
 					formObject[key] = value;
 				}
 			});
-			formObject['notes'] = options_note;
+			formObject['options'] = options_note;
+			formObject['source'] = source;
 			createTable(formObject);
 			event.target.reset();
 			var submitButton = document.getElementById('submitButton');
 			submitButton.disabled = true;
 		}
-		function createTable(data) {
-			var table = document.createElement('table');
-			var tableBody = document.createElement('tbody');
-
-			for (var key in data) {
-				var row = document.createElement('tr');
-				var cellKey = document.createElement('td');
-				var cellValue = document.createElement('td');
-
-				cellKey.textContent = key;
-				cellValue.textContent = data[key];
-
-				row.appendChild(cellKey);
-				row.appendChild(cellValue);
-				tableBody.appendChild(row);
-			}
-
-			table.appendChild(tableBody);
-			var tableContainer = document.getElementById('tableContainer');
-			tableContainer.appendChild(table);
-		}
-
 		function handleSelectChange(event) {
 			var selectedOption = event.target.value;
 			var checkboxContainer = document.getElementById('checkboxContainer');
@@ -187,7 +275,7 @@
 				{
 					key: 'coffee',
 					items: [
-						'Large', 'Medium', 'Small', 'Extra Shot', 'Soy Milk', 'Custom'
+						'Large', 'Medium', 'Small', 'Extra Shot', 'Soy Milk'
 					]
 				},
 				{
@@ -228,30 +316,38 @@
 					checkboxLabel.appendChild(document.createTextNode(item));
 					checkboxLabel.appendChild(checkbox);
 					checkboxContainer.appendChild(checkboxLabel);
-					if (item.toLowerCase() === 'custom') {
-						checkbox.addEventListener('change', function () {
-							var customTextField = document.getElementById('customTextField');
-							var customLabel = document.createElement('label');
-							customLabel.appendChild(document.createTextNode('*'));
-							var submitButton = document.getElementById('submitButton');
-							if (checkbox.checked && !customTextField) {
-								customTextField = document.createElement('input');
-								customTextField.type = 'text';
-								customTextField.name = 'drink custom';
-								customTextField.id = 'customTextField';
-								checkboxLabel.appendChild(customLabel);
-								checkboxLabel.appendChild(customTextField);
-								customTextField.addEventListener('keyup', () => {
-									window.updateSubmitButtonState();
-								})
+					checkbox.addEventListener('change', function () {
+						var customTextField = document.getElementById('customTextField');
+						var customLabel = document.getElementById('customLabel');
+						var submitButton = document.getElementById('submitButton');
+						var customDiv = document.getElementById('customDiv');
+						if (checkbox.checked && !customLabel && !customTextField) {
+							customTextField = document.createElement('input');
+							customLabel = document.createElement('label');
+							customDiv = document.createElement('div');
+							customLabel.id = 'customLabel';
+							customTextField.type = 'text';
+							customTextField.name = 'drink custom';
+							customTextField.id = 'customTextField';
+							customLabel.textContent = 'Notes*'
+							customDiv.id = 'customDiv';
+							customDiv.appendChild(customLabel);
+							customDiv.appendChild(customTextField);
+							checkboxContainer.appendChild(customDiv)
+							customTextField.addEventListener('keyup', () => {
+								window.updateSubmitButtonState();
+							})
+						}
+						else if (!checkbox.checked) {
+							//  && customTextField
+							var checkboxes = document.querySelectorAll('#checkboxContainer input[type="checkbox"]');
+							var isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+							if (!isChecked) {
+								customDiv.remove();
 							}
-							else if (!checkbox.checked && customTextField) {
-								customLabel.remove();
-								customTextField.remove();
-							}
-							window.updateSubmitButtonState();
-						});
-					}
+						}
+						window.updateSubmitButtonState();
+					})
 				});
 			}
 		}
@@ -335,6 +431,25 @@
 						minLength = 5;
 						maxLength = 500;
 						example = "";  // No example needed for comments
+						break;
+					case 'address1':
+						regex = /^[0-9a-zA-Z\s]+$/;
+						minLength = 1;
+						maxLength = 100;
+						example = "e.g., 123 Main St";
+						break;
+					case 'city':
+						regex = /^[a-zA-Z\s]+$/;
+						minLength = 1;
+						maxLength = 50;
+						example = "e.g., Boston";
+						break;
+
+					case 'state':
+						regex = /^[a-zA-Z\s]+$/;
+						minLength = 2;
+						maxLength = 2;
+						example = "e.g., MA";
 						break;
 					default:
 						return true;
